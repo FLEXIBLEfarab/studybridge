@@ -90,57 +90,57 @@ export default function DashboardLayout({
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className="h-20 border-b border-border bg-card flex items-center justify-between px-4 lg:px-10 shrink-0">
-          <div className="flex items-center gap-3">
+        <header className="h-14 md:h-20 border-b border-border bg-card flex items-center justify-between px-3 lg:px-10 shrink-0">
+          <div className="flex items-center gap-2">
             <button 
-              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="md:hidden p-1.5 rounded-lg hover:bg-muted transition-colors"
               onClick={() => setIsMobileMenuOpen(true)}
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
-            <h2 className="text-xl md:text-2xl font-bold">
+            <h2 className="text-base md:text-2xl font-bold">
               {navItems.find((item) => item.href === pathname)?.name || "Dashboard"}
             </h2>
           </div>
 
-          <div className="flex items-center gap-4 ml-auto">
+          <div className="flex items-center gap-2 md:gap-4 ml-auto">
             {mounted && (
-              <div className="flex items-center gap-4 bg-muted/50 p-2 rounded-2xl border border-border">
+              <div className="flex items-center gap-2 md:gap-4 bg-muted/50 p-1.5 md:p-2 rounded-xl md:rounded-2xl border border-border">
                 {/* Level */}
-                <div className="flex items-center gap-2 px-3">
-                  <div className="w-6 h-6 rounded-full bg-brand-purple/20 flex items-center justify-center border border-brand-purple/30">
-                    <span className="text-xs font-bold text-brand-purple">{level}</span>
+                <div className="flex items-center gap-1 md:gap-2 px-1.5 md:px-3">
+                  <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-brand-purple/20 flex items-center justify-center border border-brand-purple/30">
+                    <span className="text-[10px] md:text-xs font-bold text-brand-purple">{level}</span>
                   </div>
                   <span className="text-sm font-medium hidden lg:block">Lvl {level}</span>
                 </div>
 
-                <div className="w-px h-6 bg-border" />
+                <div className="w-px h-4 md:h-6 bg-border" />
 
                 {/* Streak */}
-                <div className="flex items-center gap-2 px-3 text-orange-500">
-                  <Flame className="w-5 h-5 fill-orange-500" />
-                  <span className="text-sm font-bold">{streak}</span>
+                <div className="flex items-center gap-1 px-1.5 md:px-3 text-orange-500">
+                  <Flame className="w-4 h-4 md:w-5 md:h-5 fill-orange-500" />
+                  <span className="text-xs md:text-sm font-bold">{streak}</span>
                 </div>
 
-                <div className="w-px h-6 bg-border" />
+                <div className="w-px h-4 md:h-6 bg-border" />
 
                 {/* Coins */}
-                <div className="flex items-center gap-2 px-3 text-brand-green">
-                  <Coins className="w-5 h-5" />
-                  <span className="text-sm font-bold">{coins}</span>
+                <div className="flex items-center gap-1 px-1.5 md:px-3 text-brand-green">
+                  <Coins className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-xs md:text-sm font-bold">{coins}</span>
                 </div>
               </div>
             )}
 
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors border border-border"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors border border-border"
             >
               {mounted ? (
                 theme === "dark" ? (
-                  <Sun className="w-5 h-5 text-yellow-500" />
+                  <Sun className="w-4 h-4 md:w-5 md:h-5 text-yellow-500" />
                 ) : (
-                  <Moon className="w-5 h-5 text-brand-purple" />
+                  <Moon className="w-4 h-4 md:w-5 md:h-5 text-brand-purple" />
                 )
               ) : (
                 <div className="w-5 h-5" />
