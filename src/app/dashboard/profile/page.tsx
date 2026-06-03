@@ -127,7 +127,7 @@ export default function ProfilePage() {
                 )}
 
                 <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4 mt-2">
-                  {item.type === "border" && <div className={`w-12 h-12 rounded-full bg-transparent ${item.style}`} />}
+                  {item.type === "border" && 'style' in item && <div className={`w-12 h-12 rounded-full bg-transparent ${item.style}`} />}
                   {item.type === "background" && <ImageIcon className="w-8 h-8 text-muted-foreground" />}
                   {item.type === "badge" && <Award className="w-8 h-8 text-muted-foreground" />}
                 </div>
