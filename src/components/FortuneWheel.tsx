@@ -41,8 +41,9 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
       setSpinning(false);
       // Calculate which prize won based on rotation
       const normalizedDegree = newRotation % 360;
-      // 4 slices, 90 degrees each
-      const prizeIndex = Math.floor((360 - normalizedDegree + 45) % 360 / 90);
+      // Wheel colors start at 45deg, so we offset by -45deg when calculating the slice
+      const pointerAngleOnWheel = (360 - normalizedDegree - 45 + 360) % 360;
+      const prizeIndex = Math.floor(pointerAngleOnWheel / 90);
       setWonPrize(prizes[prizeIndex]);
       
       setTimeout(() => setShowCheckout(true), 1000);
@@ -102,7 +103,7 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
                       {/* Wheel Slices - Simulated with conic gradient */}
                       <div className="absolute inset-0" 
                         style={{
-                          background: "conic-gradient(from 0deg, #8b5cf6 0deg 90deg, #10b981 90deg 180deg, #3b82f6 180deg 270deg, #f59e0b 270deg 360deg)"
+                          background: "conic-gradient(from 45deg, #8b5cf6 0deg 90deg, #10b981 90deg 180deg, #3b82f6 180deg 270deg, #f59e0b 270deg 360deg)"
                         }}
                       />
                       {/* Prize Text */}
@@ -110,7 +111,7 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
                         <div
                           key={i}
                           className="absolute inset-0 flex items-center justify-end"
-                          style={{ transform: `rotate(${i * 90 - 45}deg)` }}
+                          style={{ transform: `rotate(${i * 90}deg)` }}
                         >
                           <span className="text-white font-bold text-[11px] leading-tight w-1/2 text-right pr-6 drop-shadow-md">
                             {prize}
