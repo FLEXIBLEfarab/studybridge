@@ -102,8 +102,20 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
                           background: "conic-gradient(from 0deg, #8b5cf6 0deg 90deg, #10b981 90deg 180deg, #3b82f6 180deg 270deg, #f59e0b 270deg 360deg)"
                         }}
                       />
+                      {/* Prize Text */}
+                      {prizes.map((prize, i) => (
+                        <div
+                          key={i}
+                          className="absolute inset-0 flex items-center justify-center"
+                          style={{ transform: `rotate(${i * 90 + 45}deg)` }}
+                        >
+                          <span className="text-white font-bold text-[10px] w-1/2 text-right pr-4 drop-shadow-md">
+                            {prize}
+                          </span>
+                        </div>
+                      ))}
                       {/* Divider lines */}
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="w-full h-1 bg-border/50 absolute rotate-[45deg]" />
                         <div className="w-full h-1 bg-border/50 absolute rotate-[135deg]" />
                       </div>

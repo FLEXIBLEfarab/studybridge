@@ -8,21 +8,21 @@ import { FortuneWheel } from "@/components/FortuneWheel";
 const questions = [
   {
     id: 1,
-    question: "If 3x - y = 12 and y = 3, what is the value of x?",
-    options: ["3", "4", "5", "6"],
-    answer: "5",
+    question: "If f(x) = x^2 - 3x + c and f(2) = 5, what is the value of f(-1)?",
+    options: ["5", "7", "9", "11"],
+    answer: "11",
   },
   {
     id: 2,
-    question: "Which of the following is equivalent to (x^2 - 4) / (x - 2)?",
-    options: ["x - 2", "x + 2", "x^2", "x"],
-    answer: "x + 2",
+    question: "A line passes through (2, 5) and (6, 13). What is the y-intercept of the line?",
+    options: ["1", "2", "3", "4"],
+    answer: "1",
   },
   {
     id: 3,
-    question: "A store sells shirts for $20 each. If a customer buys 3 shirts, they get a 10% discount on the total. How much do they pay?",
-    options: ["$60", "$50", "$54", "$58"],
-    answer: "$54",
+    question: "In a right triangle, one angle measures x°, where sin(x°) = 4/5. What is the value of cos(90° - x°)?",
+    options: ["3/5", "4/5", "1", "0"],
+    answer: "4/5",
   },
 ];
 
@@ -43,6 +43,12 @@ export default function DiagnosticPage() {
     }
   };
 
+  const score = answers.reduce((acc, curr, idx) => {
+    return acc + (curr === questions[idx].answer ? 1 : 0);
+  }, 0);
+  const currentLevelPercentage = showResults ? Math.round((score / questions.length) * 100) : 0;
+  const gap = Math.max(0, 90 - currentLevelPercentage);
+
   if (showResults) {
     return (
       <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -60,13 +66,13 @@ export default function DiagnosticPage() {
               <div className="space-y-2">
                 <div className="flex justify-between font-medium">
                   <span className="text-muted-foreground">Your Current Level</span>
-                  <span className="text-red-500">35%</span>
+                  <span className={`${currentLevelPercentage >= 90 ? 'text-brand-green' : 'text-red-500'}`}>{currentLevelPercentage}%</span>
                 </div>
                 <div className="h-4 w-full bg-muted rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-red-500"
+                    className={`h-full ${currentLevelPercentage >= 90 ? 'bg-brand-green' : 'bg-red-500'}`}
                     initial={{ width: 0 }}
-                    animate={{ width: "35%" }}
+                    animate={{ width: `${currentLevelPercentage}%` }}
                     transition={{ duration: 1, delay: 0.2 }}
                   />
                 </div>
@@ -88,10 +94,17 @@ export default function DiagnosticPage() {
               </div>
 
               <div className="pt-4 border-t border-border">
-                <div className="flex items-center gap-3 text-orange-500 bg-orange-500/10 p-4 rounded-xl border border-orange-500/20">
-                  <AlertTriangle className="w-5 h-5 shrink-0" />
-                  <p className="text-sm font-medium">You have a 55% gap to close before the exam date.</p>
-                </div>
+                {gap > 0 ? (
+                  <div className="flex items-center gap-3 text-orange-500 bg-orange-500/10 p-4 rounded-xl border border-orange-500/20">
+                    <AlertTriangle className="w-5 h-5 shrink-0" />
+                    <p className="text-sm font-medium">You have a {gap}% gap to close before the exam date.</p>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 text-brand-green bg-brand-green/10 p-4 rounded-xl border border-brand-green/20">
+                    <Sparkles className="w-5 h-5 shrink-0" />
+                    <p className="text-sm font-medium">You are perfectly on track for your target! Keep it up.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
