@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import { 
   LayoutDashboard, 
@@ -15,7 +15,9 @@ import {
   Moon,
   Flame,
   Coins,
-  GraduationCap
+  GraduationCap,
+  Menu,
+  X
 } from "lucide-react";
 import { useUserStore } from "@/lib/store";
 import { useEffect, useState } from "react";
@@ -38,6 +40,7 @@ export default function DashboardLayout({
   const { theme, setTheme } = useTheme();
   const { coins, level, streak } = useUserStore();
   const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -87,10 +90,18 @@ export default function DashboardLayout({
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className="h-20 border-b border-border bg-card flex items-center justify-between px-6 lg:px-10 shrink-0">
-          <h2 className="text-2xl font-bold hidden sm:block">
-            {navItems.find((item) => item.href === pathname)?.name || "Dashboard"}
-          </h2>
+        <header className="h-20 border-b border-border bg-card flex items-center justify-between px-4 lg:px-10 shrink-0">
+          <div className="flex items-center gap-3">
+            <button 
+              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <h2 className="text-xl md:text-2xl font-bold">
+              {navItems.find((item) => item.href === pathname)?.name || "Dashboard"}
+            </h2>
+          </div>
 
           <div className="flex items-center gap-4 ml-auto">
             {mounted && (
@@ -144,7 +155,7 @@ export default function DashboardLayout({
         </div>
 
         {/* Mobile Bottom Navigation */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border flex items-center justify-around p-3 z-50">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border flex items-center justify-around p-3 z-40">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -162,6 +173,61 @@ export default function DashboardLayout({
             );
           })}
         </nav>
+
+        {/* Mobile Drawer (Hamburger Menu) */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 md:hidden"
+              />
+              <motion.aside
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ type: "spring", bounce: 0, duration: 0.3 }}
+                className="fixed inset-y-0 left-0 w-64 bg-card border-r border-border z-50 flex flex-col md:hidden shadow-2xl"
+              >
+                <div className="p-6 flex items-center justify-between border-b border-border">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-purple to-brand-green flex items-center justify-center">
+                      <GraduationCap className="text-white w-5 h-5" />
+                    </div>
+                    <span className="text-xl font-bold tracking-tight">StudyBridge</span>
+                  </div>
+                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-muted rounded-lg">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+                  {navItems.map((item) => {
+                    const isActive = pathname === item.href;
+                    const Icon = item.icon;
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all relative ${
+                          isActive
+                            ? "text-brand-purple font-medium bg-brand-purple/10"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`}
+                      >
+                        <Icon className={`w-5 h-5 ${isActive ? "text-brand-purple" : ""}`} />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );

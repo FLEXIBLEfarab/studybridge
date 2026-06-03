@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, X } from "lucide-react";
 import { useUserStore } from "@/lib/store";
+import { useRouter } from "next/navigation";
 
 interface FortuneWheelProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
   const [wonPrize, setWonPrize] = useState<string | null>(null);
   const { setPremium } = useUserStore();
   const [showCheckout, setShowCheckout] = useState(false);
+  const router = useRouter();
 
   const spinWheel = () => {
     if (spinning) return;
@@ -51,6 +53,7 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
     setPremium(true);
     setShowCheckout(false);
     onClose();
+    router.push("/dashboard/store");
   };
 
   return (
@@ -106,10 +109,10 @@ export function FortuneWheel({ isOpen, onClose }: FortuneWheelProps) {
                       {prizes.map((prize, i) => (
                         <div
                           key={i}
-                          className="absolute inset-0 flex items-center justify-center"
-                          style={{ transform: `rotate(${i * 90 + 45}deg)` }}
+                          className="absolute inset-0 flex items-center justify-end"
+                          style={{ transform: `rotate(${i * 90 - 45}deg)` }}
                         >
-                          <span className="text-white font-bold text-[10px] w-1/2 text-right pr-4 drop-shadow-md">
+                          <span className="text-white font-bold text-[11px] leading-tight w-1/2 text-right pr-6 drop-shadow-md">
                             {prize}
                           </span>
                         </div>
